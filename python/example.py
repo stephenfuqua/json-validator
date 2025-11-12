@@ -8,6 +8,8 @@ Example usage of the Ed-Fi JSON validator.
 
 This script demonstrates how to use the DataLakeValidator programmatically
 to validate JSON files against Ed-Fi OpenAPI specifications.
+
+DO NOT MERGE THIS CHANGE
 """
 
 import logging
