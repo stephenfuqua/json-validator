@@ -1,0 +1,747 @@
+info:
+  title: Ed-Fi Resources API
+  version: '6.0.0'
+openapi: 3.0.4
+components:
+  schemas:
+    edFi_assessment:
+      required:
+      - assessmentIdentifier
+      - namespace
+      - academicSubjectDescriptor
+      - assessmentTitle
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        assessmentIdentifier:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment.
+          x-Ed-Fi-isIdentity: true
+        namespace:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: Namespace for the assessment.
+          x-Ed-Fi-isIdentity: true
+        educationOrganizationReference:
+          $ref: '#/components/schemas/edFi_educationOrganizationReference'
+        academicSubjectDescriptor:
+          maxLength: 306
+          type: string
+          description: The description of the content or subject area (e.g., arts, mathematics, reading, stenography, a foreign language, or composite if multi-subject) of an assessment.
+        adaptiveAssessment:
+          type: boolean
+          description: Indicates that the assessment is adaptive.
+          x-nullable: true
+        assessedGradeLevels:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentAssessedGradeLevel'
+          description: An unordered collection of assessmentAssessedGradeLevels. The grade level(s) for which an assessment is designed. The semantics of null is assumed to mean that the assessment is not associated with any grade level.
+        assessmentCategoryDescriptor:
+          maxLength: 306
+          type: string
+          description: The category of an assessment based on format and content.
+          x-nullable: true
+        assessmentFamily:
+          maxLength: 60
+          type: string
+          description: The assessment family this assessment is a member of.
+          x-nullable: true
+        assessmentForm:
+          maxLength: 60
+          type: string
+          description: Identifies the form of the assessment, for example a regular versus makeup form, multiple choice versus constructed response, etc.
+          x-nullable: true
+        assessmentTitle:
+          maxLength: 255
+          type: string
+          description: The title or name of the assessment.
+        assessmentVersion:
+          type: integer
+          description: The version identifier for the assessment.
+          format: int32
+          x-nullable: true
+        contentStandard:
+          $ref: '#/components/schemas/edFi_assessmentContentStandard'
+        identificationCodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentIdentificationCode'
+          description: An unordered collection of assessmentIdentificationCodes. A unique number or alphanumeric code assigned to an assessment by a school, school system, a state, or other agency or entity.
+        languages:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentLanguage'
+          description: An unordered collection of assessmentLanguages. An indication of the languages in which the assessment is designed.
+        maxRawScore:
+          maximum: 9999999999.99999
+          minimum: -9999999999.99999
+          type: number
+          description: The maximum raw score achievable across all assessment items that are correct and scored at the maximum.
+          format: double
+          x-nullable: true
+        nomenclature:
+          maxLength: 100
+          type: string
+          description: Reflects the specific nomenclature used for assessment.
+          x-nullable: true
+        performanceLevels:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentPerformanceLevel'
+          description: 'An unordered collection of assessmentPerformanceLevels. Definition of the performance levels and the associated cut scores. Three styles are supported: 1. Specification of performance level by minimum and maximum score, 2. Specification of performance level by cut score, using only minimum score, 3. Specification of performance level without any mapping to scores.'
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentPeriod'
+          description: An unordered collection of assessmentPeriods. The period or window in which an assessment is supposed to be administered.
+        platformTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentPlatformType'
+          description: An unordered collection of assessmentPlatformTypes. The platforms with which the assessment may be delivered.
+        programs:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentProgram'
+          description: An unordered collection of assessmentPrograms. The programs associated with the assessment.
+        revisionDate:
+          type: string
+          description: The month, day, and year that the conceptual design for the assessment was most recently revised substantially.
+          format: date
+          x-nullable: true
+        scores:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentScore'
+          description: An unordered collection of assessmentScores. Definition of the scores to be expected from this assessment.
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentSection'
+          description: An unordered collection of assessmentSections. The Section(s) to which the assessment is associated.
+    edFi_assessmentAdministration:
+      required:
+      - administrationIdentifier
+      - assessmentReference
+      - assigningEducationOrganizationReference
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        administrationIdentifier:
+          maxLength: 255
+          type: string
+          description: The title or name of the assessment in the context of its administration.
+          x-Ed-Fi-isIdentity: true
+        assessmentReference:
+          $ref: '#/components/schemas/edFi_assessmentReference'
+        assigningEducationOrganizationReference:
+          $ref: '#/components/schemas/edFi_educationOrganizationReference'
+        assessmentBatteryParts:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentAdministrationAssessmentBatteryPart'
+          description: An unordered collection of assessmentAdministrationAssessmentBatteryParts. A reference to the parts of the assessment battery that are offered in this administration of the assessment.
+        periods:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentAdministrationPeriod'
+          description: An unordered collection of assessmentAdministrationPeriods. The anticipated dates for the assessment or administration window.
+    edFi_assessmentAdministrationAssessmentBatteryPart:
+      required:
+      - assessmentBatteryPartReference
+      type: object
+      properties:
+        assessmentBatteryPartReference:
+          $ref: '#/components/schemas/edFi_assessmentBatteryPartReference'
+    edFi_assessmentAdministrationParticipation:
+      required:
+      - assessmentAdministrationReference
+      - participatingEducationOrganizationReference
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        assessmentAdministrationReference:
+          $ref: '#/components/schemas/edFi_assessmentAdministrationReference'
+        participatingEducationOrganizationReference:
+          $ref: '#/components/schemas/edFi_educationOrganizationReference'
+        administrationPointOfContacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentAdministrationParticipationAdministrationPointOfContact'
+          description: An unordered collection of assessmentAdministrationParticipationAdministrationPointOfContacts. Pre-identified contacts for education organizations administering the assessment.
+    edFi_assessmentAdministrationParticipationAdministrationPointOfContact:
+      required:
+      - electronicMailAddress
+      - firstName
+      - lastSurname
+      - educationOrganizationReference
+      type: object
+      properties:
+        electronicMailAddress:
+          maxLength: 128
+          minLength: 7
+          type: string
+          description: The email address for the contact.
+          x-Ed-Fi-isIdentity: true
+        firstName:
+          maxLength: 75
+          type: string
+          description: The contact's first name.
+        lastSurname:
+          maxLength: 75
+          type: string
+          description: The contact's last name.
+        loginId:
+          maxLength: 120
+          type: string
+          description: The login ID for the user; used for security access control interface.
+          x-nullable: true
+        educationOrganizationReference:
+          $ref: '#/components/schemas/edFi_educationOrganizationReference'
+    edFi_assessmentAdministrationPeriod:
+      required:
+      - beginDate
+      type: object
+      properties:
+        beginDate:
+          type: string
+          description: 'The month, day, and year for the start of the period.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-Ed-Fi-isIdentity: true
+        endDate:
+          type: string
+          description: 'The month, day, and year for the end of the period.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-nullable: true
+    edFi_assessmentAdministrationReference:
+      required:
+      - administrationIdentifier
+      - assessmentIdentifier
+      - assigningEducationOrganizationId
+      - namespace
+      type: object
+      properties:
+        administrationIdentifier:
+          maxLength: 255
+          type: string
+          description: The title or name of the assessment in the context of its administration.
+          x-Ed-Fi-isIdentity: true
+        assessmentIdentifier:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment.
+          x-Ed-Fi-isIdentity: true
+        assigningEducationOrganizationId:
+          type: integer
+          description: The identifier assigned to an education organization.
+          format: int64
+          x-Ed-Fi-isIdentity: true
+        namespace:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: Namespace for the assessment.
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
+    edFi_assessmentAssessedGradeLevel:
+      required:
+      - gradeLevelDescriptor
+      type: object
+      properties:
+        gradeLevelDescriptor:
+          maxLength: 306
+          type: string
+          description: The grade level(s) for which an assessment is designed. The semantics of null is assumed to mean that the assessment is not associated with any grade level.
+          x-Ed-Fi-isIdentity: true
+    edFi_assessmentBatteryPart:
+      required:
+      - assessmentBatteryPartName
+      - assessmentReference
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        assessmentBatteryPartName:
+          maxLength: 65
+          type: string
+          description: The name of the part of an assessment battery.
+          x-Ed-Fi-isIdentity: true
+        assessmentReference:
+          $ref: '#/components/schemas/edFi_assessmentReference'
+        objectiveAssessments:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentBatteryPartObjectiveAssessment'
+          description: An unordered collection of assessmentBatteryPartObjectiveAssessments. A reference to the objective assessment(s) that are administered by the assessment battery part.
+    edFi_assessmentBatteryPartObjectiveAssessment:
+      required:
+      - objectiveAssessmentReference
+      type: object
+      properties:
+        objectiveAssessmentReference:
+          $ref: '#/components/schemas/edFi_objectiveAssessmentReference'
+    edFi_assessmentBatteryPartReference:
+      required:
+      - assessmentBatteryPartName
+      - assessmentIdentifier
+      - namespace
+      type: object
+      properties:
+        assessmentBatteryPartName:
+          maxLength: 65
+          type: string
+          description: The name of the part of an assessment battery.
+          x-Ed-Fi-isIdentity: true
+        assessmentIdentifier:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment.
+          x-Ed-Fi-isIdentity: true
+        namespace:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: Namespace for the assessment.
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
+    edFi_assessmentContentStandard:
+      required:
+      - title
+      type: object
+      properties:
+        publicationStatusDescriptor:
+          maxLength: 306
+          type: string
+          description: The publication status of the document (i.e., Adopted, Draft, Published, Deprecated, Unknown).
+          x-nullable: true
+        beginDate:
+          type: string
+          description: 'The beginning of the period during which this learning standard document is intended for use.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-nullable: true
+        endDate:
+          type: string
+          description: 'The end of the period during which this learning standard document is intended for use.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-nullable: true
+        publicationDate:
+          type: string
+          description: The date on which this content was first published.
+          format: date
+          x-nullable: true
+        publicationYear:
+          type: integer
+          description: The year at which this content was first published.
+          format: int32
+          x-nullable: true
+        title:
+          maxLength: 100
+          type: string
+          description: The name of the content standard, for example Common Core.
+        uri:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: An unambiguous reference to the standards using a network-resolvable URI.
+          x-nullable: true
+        version:
+          maxLength: 50
+          type: string
+          description: The version identifier for the content.
+          x-nullable: true
+        mandatingEducationOrganizationReference:
+          $ref: '#/components/schemas/edFi_educationOrganizationReference'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentContentStandardAuthor'
+          description: An unordered collection of assessmentContentStandardAuthors. The person or organization chiefly responsible for the intellectual content of the standard.
+    edFi_assessmentContentStandardAuthor:
+      required:
+      - author
+      type: object
+      properties:
+        author:
+          maxLength: 255
+          type: string
+          description: The person or organization chiefly responsible for the intellectual content of the standard.
+          x-Ed-Fi-isIdentity: true
+    edFi_assessmentIdentificationCode:
+      required:
+      - assessmentIdentificationSystemDescriptor
+      - identificationCode
+      type: object
+      properties:
+        assessmentIdentificationSystemDescriptor:
+          maxLength: 306
+          type: string
+          description: A coding scheme that is used for identification and record-keeping purposes by schools, social services, or other agencies to refer to an assessment.
+          x-Ed-Fi-isIdentity: true
+        assigningOrganizationIdentificationCode:
+          maxLength: 120
+          type: string
+          description: The organization code or name assigning the assessment identification code.
+          x-nullable: true
+        identificationCode:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment by a school, school system, state, or other agency or entity.
+    edFi_assessmentItem:
+      required:
+      - identificationCode
+      - assessmentReference
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        identificationCode:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to a space, room, site, building, individual, organization, program, or institution by a school, school system, state, or other agency or entity.
+          x-Ed-Fi-isIdentity: true
+        assessmentReference:
+          $ref: '#/components/schemas/edFi_assessmentReference'
+        assessmentItemCategoryDescriptor:
+          maxLength: 306
+          type: string
+          description: Category or type of the assessment item.
+          x-nullable: true
+        assessmentItemURI:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: The URI (typical a URL) pointing to the entry in an assessment item bank, which describes this content item.
+          x-nullable: true
+        expectedTimeAssessed:
+          maxLength: 30
+          type: string
+          description: The duration allotted for the assessment item expressed in minutes.
+          x-nullable: true
+        itemText:
+          maxLength: 1024
+          type: string
+          description: The text of the item.
+          x-nullable: true
+        learningStandards:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentItemLearningStandard'
+          description: An unordered collection of assessmentItemLearningStandards. Learning standard tested by this item.
+        maxRawScore:
+          maximum: 9999999999.99999
+          minimum: -9999999999.99999
+          type: number
+          description: The maximum raw score achievable across all assessment items that are correct and scored at the maximum.
+          format: double
+          x-nullable: true
+        nomenclature:
+          maxLength: 100
+          type: string
+          description: Reflects the specific nomenclature used for assessment item.
+          x-nullable: true
+        possibleResponses:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentItemPossibleResponse'
+          description: An unordered collection of assessmentItemPossibleResponses. A possible response to an assessment item.
+    edFi_assessmentItemLearningStandard:
+      required:
+      - learningStandardReference
+      type: object
+      properties:
+        learningStandardReference:
+          $ref: '#/components/schemas/edFi_learningStandardReference'
+    edFi_assessmentItemPossibleResponse:
+      required:
+      - responseValue
+      type: object
+      properties:
+        responseValue:
+          maxLength: 60
+          type: string
+          description: The response value, often an option number or code value (e.g., 1, 2, A, B, true, false).
+          x-Ed-Fi-isIdentity: true
+        correctResponse:
+          type: boolean
+          description: Indicates the response is correct.
+          x-nullable: true
+        responseDescription:
+          maxLength: 1024
+          type: string
+          description: Additional text provided to define the response value.
+          x-nullable: true
+    edFi_assessmentItemReference:
+      required:
+      - assessmentIdentifier
+      - identificationCode
+      - namespace
+      type: object
+      properties:
+        assessmentIdentifier:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment.
+          x-Ed-Fi-isIdentity: true
+        identificationCode:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to a space, room, site, building, individual, organization, program, or institution by a school, school system, state, or other agency or entity.
+          x-Ed-Fi-isIdentity: true
+        namespace:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: Namespace for the assessment.
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
+    edFi_assessmentLanguage:
+      required:
+      - languageDescriptor
+      type: object
+      properties:
+        languageDescriptor:
+          maxLength: 306
+          type: string
+          description: An indication of the languages in which the assessment is designed.
+          x-Ed-Fi-isIdentity: true
+    edFi_assessmentPerformanceLevel:
+      required:
+      - assessmentReportingMethodDescriptor
+      - performanceLevelDescriptor
+      type: object
+      properties:
+        assessmentReportingMethodDescriptor:
+          maxLength: 306
+          type: string
+          description: The method that the instructor of the class uses to report the performance and achievement of all students. It may be a qualitative method such as individualized teacher comments or a quantitative method such as a letter or numerical grade. In some cases, more than one type of reporting method may be used.
+          x-Ed-Fi-isIdentity: true
+        performanceLevelDescriptor:
+          maxLength: 306
+          type: string
+          description: The performance level(s) defined for the assessment.
+          x-Ed-Fi-isIdentity: true
+        resultDatatypeTypeDescriptor:
+          maxLength: 306
+          type: string
+          description: The datatype of the result. The results can be expressed as a number, percentile, range, level, etc.
+          x-nullable: true
+        maximumScore:
+          maxLength: 35
+          type: string
+          description: The maximum score to make the indicated level of performance.
+          x-nullable: true
+        minimumScore:
+          maxLength: 35
+          type: string
+          description: The minimum score required to make the indicated level of performance.
+          x-nullable: true
+        performanceLevelIndicatorName:
+          maxLength: 60
+          type: string
+          description: The name of the indicator being measured for a collection of performance level values.
+          x-nullable: true
+    edFi_assessmentPeriod:
+      required:
+      - assessmentPeriodDescriptor
+      type: object
+      properties:
+        assessmentPeriodDescriptor:
+          maxLength: 306
+          type: string
+          description: The period of time in which an assessment is supposed to be administered (e.g., Beginning of Year, Middle of Year, End of Year).
+          x-Ed-Fi-isIdentity: true
+        beginDate:
+          type: string
+          description: 'The first date the assessment is to be administered.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-nullable: true
+        endDate:
+          type: string
+          description: 'The last date the assessment is to be administered.  Note: Date interpretation may vary. Ed-Fi recommends inclusive dates, but states may define dates as inclusive or exclusive. For calculations, align with local guidelines.'
+          format: date
+          x-nullable: true
+    edFi_assessmentPlatformType:
+      required:
+      - platformTypeDescriptor
+      type: object
+      properties:
+        platformTypeDescriptor:
+          maxLength: 306
+          type: string
+          description: The platforms with which the assessment may be delivered.
+          x-Ed-Fi-isIdentity: true
+    edFi_assessmentProgram:
+      required:
+      - programReference
+      type: object
+      properties:
+        programReference:
+          $ref: '#/components/schemas/edFi_programReference'
+    edFi_assessmentReference:
+      required:
+      - assessmentIdentifier
+      - namespace
+      type: object
+      properties:
+        assessmentIdentifier:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to an assessment.
+          x-Ed-Fi-isIdentity: true
+        namespace:
+          maxLength: 255
+          minLength: 5
+          type: string
+          description: Namespace for the assessment.
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
+    edFi_assessmentScore:
+      required:
+      - assessmentReportingMethodDescriptor
+      type: object
+      properties:
+        assessmentReportingMethodDescriptor:
+          maxLength: 306
+          type: string
+          description: The method that the administrator of the assessment uses to report the performance and achievement of all students. It may be a qualitative method such as performance level descriptors or a quantitative method such as a numerical grade or cut score. More than one type of reporting method may be used.
+          x-Ed-Fi-isIdentity: true
+        resultDatatypeTypeDescriptor:
+          maxLength: 306
+          type: string
+          description: The datatype of the result. The results can be expressed as a number, percentile, range, level, etc.
+          x-nullable: true
+        maximumScore:
+          maxLength: 35
+          type: string
+          description: The maximum score possible on the assessment.
+          x-nullable: true
+        minimumScore:
+          maxLength: 35
+          type: string
+          description: The minimum score possible on the assessment.
+          x-nullable: true
+    edFi_assessmentScoreRangeLearningStandard:
+      required:
+      - scoreRangeId
+      - maximumScore
+      - minimumScore
+      - learningStandards
+      - assessmentReference
+      type: object
+      properties:
+        id:
+          type: string
+          description: ''
+        learningStandards:
+          type: array
+          items:
+            $ref: '#/components/schemas/edFi_assessmentScoreRangeLearningStandardLearningStandard'
+          description: An unordered collection of assessmentScoreRangeLearningStandardLearningStandards. Learning standard associated with the score range.
+        scoreRangeId:
+          maxLength: 120
+          type: string
+          description: A unique number or alphanumeric code assigned to the score range associated with one or more learning standards.
+          x-Ed-Fi-isIdentity: true
+        assessmentReference:
+          $ref: '#/components/schemas/edFi_assessmentReference'
+        objectiveAssessmentReference:
+          $ref: '#/components/schemas/edFi_objectiveAssessmentReference'
+        assessmentReportingMethodDescriptor:
+          maxLength: 306
+          type: string
+          description: The assessment reporting method defined (e.g., scale score, RIT scale score) associated with the referenced learning standard(s).
+          x-nullable: true
+        maximumScore:
+          maxLength: 35
+          type: string
+          description: The maximum score in the score range.
+        minimumScore:
+          maxLength: 35
+          type: string
+          description: The minimum score in the score range.
+    edFi_assessmentScoreRangeLearningStandardLearningStandard:
+      required:
+      - learningStandardReference
+      type: object
+      properties:
+        learningStandardReference:
+          $ref: '#/components/schemas/edFi_learningStandardReference'
+    edFi_assessmentSection:
+      required:
+      - sectionReference
+      type: object
+      properties:
+        sectionReference:
+          $ref: '#/components/schemas/edFi_sectionReference'
+    edFi_educationOrganizationReference:
+      required:
+      - educationOrganizationId
+      type: object
+      properties:
+        educationOrganizationId:
+          type: integer
+          description: The identifier assigned to an education organization.
+          format: int64
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
+
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Describes the nature of the relationship to the referenced resource.
+        href:
+          type: string
+          description: The URL to the related resource.
+    edFi_sectionReference:
+      required:
+      - localCourseCode
+      - schoolId
+      - schoolYear
+      - sectionIdentifier
+      - sessionName
+      type: object
+      properties:
+        localCourseCode:
+          maxLength: 60
+          type: string
+          description: The local code assigned by the School that identifies the course offering provided for the instruction of students.
+          x-Ed-Fi-isIdentity: true
+        schoolId:
+          type: integer
+          description: The identifier assigned to a school. It must be distinct from any other identifier assigned to educational organizations, such as a LocalEducationAgencyId, to prevent duplication.
+          format: int64
+          x-Ed-Fi-isIdentity: true
+        schoolYear:
+          type: integer
+          description: The identifier for the school year.
+          format: int32
+          x-Ed-Fi-isIdentity: true
+        sectionIdentifier:
+          maxLength: 255
+          type: string
+          description: The local identifier assigned to a section.
+          x-Ed-Fi-isIdentity: true
+        sessionName:
+          maxLength: 120
+          type: string
+          description: The identifier for the calendar for the academic session.
+          x-Ed-Fi-isIdentity: true
+        link:
+          $ref: '#/components/schemas/link'
